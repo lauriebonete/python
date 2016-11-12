@@ -16,12 +16,16 @@ def compress():
     
     if os.path.isdir(location):
         logging.info("Zipping "+location)
-        zf = zipfile.ZipFile(date[2]+"-"+date[1]+"-"+date[0]+'.zip', mode='w')
-        for file_ in os.listdir(location):
-            zf.write(file_, location+"\\"+file_, compress_type=compression)
-        zf.close()
 
-logging.basicConfig(filename='\\budfget\\python logs\\compressor.log',level=logging.DEBUG)
+        try:
+            zf = zipfile.ZipFile("\\budgetfy\\backup\\uploads\\"+date[2]+"-"+date[1]+"-"+date[0]+'.zip', mode='w')
+            for file_ in os.listdir(location):
+                zf.write(location+"\\"+file_, file_, compress_type=compression)
+            zf.close()
+        except Exception, e:
+            logging.warn(e.msg)
+
+logging.basicConfig(filename='\\budgetfy\\python logs\\compressor.log',level=logging.DEBUG)
 schedule.every().day.at("17:00").do(compress)
 
 compress()
